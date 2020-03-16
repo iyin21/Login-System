@@ -1,4 +1,5 @@
 var express = require("express");
+var path = require('path');
 var session = require("express-session");
 var expressValidator = require("express-validator");
 var passport = require("passport");
@@ -7,15 +8,16 @@ var bodyParser = require("body-parser");
 var passportLocalMongoose = require("passport-local-mongoose");
 var multer = require("multer");
 var mongoose = require("mongoose");
+var User = require("./models/user");
 var flash = require('connect-flash');
 var app = express();
 
 //requiring routes
 var indexRoutes = require("./routes/index");
-//var usersRoute = require("./routes/users");
+var usersRoute = require("./routes/users");
 
 //setup mongoose
-//mongoose.connect("mongodb:/localhost/authdb", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect("mongodb://localhost/authdb", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true});
 app.use(bodyParser.urlencoded({extended : true}));
 //set view engine
 app.set('view engine', 'ejs');
@@ -31,11 +33,18 @@ app.use(function(req, res, next){
 app.use(session({
 	secret: "I love you",
 	resave: false,
-	saveUninitialized: true
+	saveUninitialized: false
 }));
 //passport Configuration
 app.use(passport.initialize());
 app.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+// passport.use(new LocalStrategy({
+//     usernameField: 'email',
+//     passwordField: 'password'
+// }, User.authenticate()));
 //validator
 app.use(expressValidator({
 	errorFormatter: function(param, msg, value) {
@@ -56,7 +65,7 @@ app.use(expressValidator({
 app.use(flash());
 
 app.use(indexRoutes);
-//app.use(usersRoutes);
+app.use(usersRoute);
 
 
 app.listen(3000, function(){

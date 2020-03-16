@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var User = require("../models/user");
 //var passport = require("passport");
 
 router.get("/", function(req, res){
@@ -22,14 +23,18 @@ router.get("/login", function(req, res){
 
 router.post("/register", function(req, res){
 	req.checkBody("password2", "Passwords do not match").equals(req.body.password);
-	var newUser = new User({firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, username: req.body.username, profilepicture: req.body.profilepicture});
+	var newUser = new User({username: req.body.username});
 	User.register(newUser, req.body.password, function(err, user){
 		if (err){
+			console.log(err);
 			req.flash("error", err.message)
 			return res.render("register");
 		}
+		passport.authenticate("local")(req, res, function(){
 		req.flash("success", 'You are registered');
-		res.redirect("/");	
+		res.redirect("/candy");
+		});
+			
 	});	
 });
 
