@@ -42,7 +42,7 @@ router.post("/register", function(req, res){
 	// }
 	//var newUser = new User({username: req.body.username, email: req.body.email, profilepicture: req.body.profilepicture});
 	if(errors){
-    	res.render('register', {
+    	res.render('/register', {
       		errors: errors
     	});
   	}else {
@@ -73,7 +73,7 @@ router.post("/login", passport.authenticate("local", {
 
 });
 router.get("/logout", function(req, res){
-	req.logout;
+	req.logout();
 	req.flash('success', 'You are logged out');
 	res.redirect('/');
 
