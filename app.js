@@ -65,6 +65,8 @@ app.use(expressValidator({
 }));
 app.use(function(req, res, next){
   res.locals.currentUser= req.user;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
   next();
 });
 
@@ -72,6 +74,6 @@ app.use(indexRoutes);
 app.use(usersRoute);
 
 
-app.listen(3000, function(){
+app.listen(4000, function(){
 	console.log("Login System");
 })

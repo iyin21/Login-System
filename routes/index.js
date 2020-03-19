@@ -27,7 +27,13 @@ router.post("/register", function(req, res){
 	// var password = req.body.password;
 	// var password2 = req.body.password2;
 	req.checkBody("password2", "Passwords do not match").equals(req.body.password);
-	var errors= req.validationErrors();
+	var errors= req.validationErrors()
+	// var errors= req.getValidationResult()
+	// req.checkBody("password2", "Passwords do not match").equals(req.body.password);
+	// var errors= req.getValidationResult()
+ //   	.then(function(result){
+ //     console.log(result.array());
+ //   		});
 	// req.assert('password2', 'Password and Confirm Password should be same.').equals(req.body.password);
 	// var mappedErrors = req.validationErrors(true);
 	// if(req.files.profilepicture){
@@ -41,12 +47,12 @@ router.post("/register", function(req, res){
 	// 	var profilePictureName = 'noimage.png';
 	// }
 	//var newUser = new User({username: req.body.username, email: req.body.email, profilepicture: req.body.profilepicture});
-	if(errors){
-    	res.render('/register', {
-      		errors: errors
-    	});
-  	}else {
-    	var newUser = new User({
+	 if(errors){
+     	res.render('register', {
+      		error: errors
+     	});
+   	}else {
+     	var newUser = new User({
       		name: req.body.name,
       		username: req.body.username,
       		email: req.body.email,
@@ -55,10 +61,11 @@ router.post("/register", function(req, res){
 		User.register(newUser, req.body.password, function(err, user){
 			if (err){
 				console.log(err);
-				req.flash("error", err.message) 
+				req.flash("error", err.message);
+				return res.redirect('register');
 			}
 			passport.authenticate("local")(req, res, function(){
-				req.flash("success", 'You are registered');
+				req.flash("success", 'Welcome to my Candybar ' + user.username);
 				res.redirect("/candy");
 			});
 				
