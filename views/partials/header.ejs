@@ -63,6 +63,11 @@
         <%= error %>
       </div>
       <% } %>
+      <% if(errors && errors.length>0){ %>
+      <div class="alert alert-danger" role="alert">
+        <%= errors %>
+      </div>
+      <% } %>
     </div>
 
 

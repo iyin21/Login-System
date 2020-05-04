@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 //set view engine
 app.set('view engine', 'ejs');
 //Handle file Uploads
-app.use(multer({dest:'./uploads'}).single('photo'));
+app.use(multer({dest:'./uploads'}).single('profilepicture'));
 app.use(express.static(__dirname + "/public"));
 app.use(flash());
 app.use(function(req, res, next){
@@ -67,6 +67,7 @@ app.use(function(req, res, next){
   res.locals.currentUser= req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.errors = req.flash("errors");
   next();
 });
 
