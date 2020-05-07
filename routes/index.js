@@ -22,19 +22,8 @@ router.get("/login", function(req, res){
 }); 
 
 router.post("/register", function(req, res){
-	// var password = req.body.password;
-	// var password2 = req.body.password2;
-	// var password = req.body.password;
-	// var password2 = req.body.password2;
 	req.checkBody("password2", "Passwords do not match").equals(req.body.password);
 	//var errors= req.validationErrors()
-	 // var errors= req.getValidationResult()
-	// req.checkBody("password2", "Passwords do not match").equals(req.body.password);
-	// var errors= req.getValidationResult()
- //   	.then(function(result){
- //     console.log(result.array());
-
-   //});
 	// var errors= req.getValidationResult()
 	//    	.then(function(result){
 	//       console.log(result.array());
@@ -43,8 +32,6 @@ router.post("/register", function(req, res){
 	//  			});	
 	//  		}		
 	//  	});
-	// req.assert('password2', 'Password and Confirm Password should be same.').equals(req.body.password);
-	// var mappedErrors = req.validationErrors(true);
 	if(req.body.profilepicture){
 		var profilePictureOriginalName = req.files.profilepicture.OriginalName
 		var profilePictureName 		 = req.files.profilepicture.name;
